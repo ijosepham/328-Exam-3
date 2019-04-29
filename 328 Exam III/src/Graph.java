@@ -32,6 +32,7 @@ public class Graph < Vertex > {
 		for ( int i = 0; i < V.size ( ); i++ ) {
 			// get vertex
 			Vertex vertex = V.get ( i );
+			
 			// if any vertex doesnt exist within E, 
 			// that means its not connected
 			if ( ! E.containsVertex ( vertex ) ) {
@@ -42,15 +43,48 @@ public class Graph < Vertex > {
 		return true;
 	}
 	
-	/**
 	public int numConnComponents ( ) {
-		int num = 0;
+		// counter
+		int counter = 0;
+		// checks to see if the same edge has been checked already
+		boolean isValid = false;
 		
-		for ( int i = 0; i < )
+		// two edges to check
+		Edge < Vertex > edge1;
+		Edge < Vertex > edge2;
 		
-		return num;
+		// iterate through array
+		for ( int i = 0; i < E.size ( ); i++ ) {
+			// get first edge
+			edge1 = E.get ( i );
+			
+			// this for loop is to check previous nodes 
+			// if it was already cehcked
+			for ( int j = 0; j < i; j++ ) {
+				// get second edge
+				edge2 = E.get ( j );
+				
+				// if any edge was already checked
+				if ( edge2.isReverse ( edge1 ) ) {
+					// flip boolean
+					isValid = true;
+				}
+			}
+			if ( edge1.)
+			
+			// if the edge is new
+			if ( ! isValid ) {
+				// increment
+				counter++;
+			}
+			
+			// default false
+			isValid = false;
+		}
+		return counter;
 	}
 	
+	/**
 	public Graph < Vertex > [ ] connectedComponents ( ) {
 		
 	}
@@ -65,7 +99,7 @@ public class Graph < Vertex > {
 	*/
 	public String toString ( ) {
 		String str = "Nodes: " + V.toString ( ) + "\n";
-		str += "Edges: " + E.toString ( ) + "\n";
+		str += "Edges: " + E.toString ( );
 		return str;
 	}
 	

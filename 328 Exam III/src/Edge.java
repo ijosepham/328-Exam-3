@@ -38,6 +38,16 @@ public class Edge < Vertex > {
 		return end;
 	}
 	
+	// sets the start
+	public void setStart ( Vertex newStart ) {
+		start = newStart;
+	}
+	
+	// sets the end
+	public void setEnd ( Vertex newEnd ) {
+		end = newEnd;
+	}
+	
 	// checks to see if an edge is the reverse of this
 	public boolean isReverse ( Edge < Vertex > edge ) {
 		// if this.start == that.end && this.end == that.start
@@ -47,6 +57,16 @@ public class Edge < Vertex > {
 		return false;
 	}
 	
+	// checks if it points to itself
+	public boolean isLoop ( ) {
+		// if start and end are the same
+		if ( start == end ) {
+			return true;
+		}
+		return false;
+	}
+	
+	// compare to function that returns a negative number if in the right order
 	public int compareTo ( Edge < Vertex > edge ) {
 		int difference = 0;
 		

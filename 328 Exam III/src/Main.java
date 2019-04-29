@@ -10,12 +10,15 @@ public class Main {
 		graph.addVertex ( "C" );
 		
 		graph.addEdge ( new Edge < String > ( "A", "B" ) );
+		graph.addEdge ( new Edge < String > ( "B", "A" ) );
 		graph.addEdge ( new Edge < String > ( "B", "C" ) );
 		graph.addEdge ( new Edge < String > ( "D", "E" ) );
 		graph.addEdge ( new Edge < String > ( "F", "A" ) );
 		graph.addEdge ( new Edge < String > ( "E", "S" ) );
+		graph.addEdge ( new Edge < String > ( "C", "C" ) );
 		
 		graph.display ( );
+		System.out.println ( "Num of Conn Comps: " + graph.numConnComponents ( ) + "\n" );
 		
 		Graph < Double > graph1 = new Graph < Double > ( );
 		graph1.addVertex ( (double) 1 );
