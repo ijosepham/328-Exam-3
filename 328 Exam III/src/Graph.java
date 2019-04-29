@@ -1,7 +1,7 @@
 public class Graph < Vertex > {
 	
-	Vertices < Vertex > V;
-	Edges < Vertex > E;
+	private Vertices < Vertex > V;
+	private Edges < Vertex > E;
 	
 	public Graph ( ) {
 		V = new Vertices < Vertex > ( );
@@ -42,14 +42,16 @@ public class Graph < Vertex > {
 		return true;
 	}
 	
+	/**
 	public int numConnComponents ( ) {
 		int num = 0;
 		
+		for ( int i = 0; i < )
 		
 		return num;
 	}
 	
-	public Graph [ ] connectedComponents ( ) {
+	public Graph < Vertex > [ ] connectedComponents ( ) {
 		
 	}
 	
@@ -60,8 +62,15 @@ public class Graph < Vertex > {
 	public void printDFS ( ) {
 		
 	}
-	
+	*/
 	public String toString ( ) {
-		
+		String str = "Nodes: " + V.toString ( ) + "\n";
+		str += "Edges: " + E.toString ( ) + "\n";
+		return str;
+	}
+	
+	
+	public void display ( ) {
+		System.out.println ( toString ( ) );
 	}
 }

@@ -1,5 +1,5 @@
 
-public class DirectedGraph extends Graph {
+public class DirectedGraph < Vertex > extends Graph < Vertex > {
 
 	public boolean isConnected ( ) {
 		
@@ -12,7 +12,7 @@ public class DirectedGraph extends Graph {
 		
 	}
 	
-	public DirectedGraph [ ] connectedComponents ( ) {
+	public DirectedGraph < Vertex > [ ] connectedComponents ( ) {
 		
 	}
 }
