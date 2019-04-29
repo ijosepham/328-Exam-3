@@ -1,7 +1,7 @@
 public class Graph < Vertex > {
 	
-	private Vertices < Vertex > V;
-	private Edges < Vertex > E;
+	protected Vertices < Vertex > V;
+	protected Edges < Vertex > E;
 	
 	public Graph ( ) {
 		V = new Vertices < Vertex > ( );
@@ -46,8 +46,9 @@ public class Graph < Vertex > {
 	public int numConnComponents ( ) {
 		// counter
 		int counter = 0;
-		// checks to see if the same edge has been checked already
-		boolean isValid = false;
+		
+		// true unless already have a reverse/ is a loop
+		boolean isValid = true;
 		
 		// two edges to check
 		Edge < Vertex > edge1;
@@ -67,19 +68,22 @@ public class Graph < Vertex > {
 				// if any edge was already checked
 				if ( edge2.isReverse ( edge1 ) ) {
 					// flip boolean
-					isValid = true;
+					isValid = false;
 				}
 			}
-			if ( edge1.)
+			// makes sure that its not a loop node
+			if ( edge1.isLoop ( ) ) {
+				isValid = false;
+			}
 			
 			// if the edge is new
-			if ( ! isValid ) {
+			if ( isValid ) {
 				// increment
 				counter++;
 			}
 			
-			// default false
-			isValid = false;
+			// default true
+			isValid = true;
 		}
 		return counter;
 	}
