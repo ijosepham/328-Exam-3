@@ -1,3 +1,7 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 public class Graph < Vertex > {
 	
 	protected Vertices < Vertex > V;
@@ -88,15 +92,52 @@ public class Graph < Vertex > {
 		return counter;
 	}
 	
-	/**
 	public Graph < Vertex > [ ] connectedComponents ( ) {
+		Graph < Vertex > [ ] graphs;
 		
+		
+		
+		return graphs;
 	}
 	
 	public void printBFS ( ) {
+		Vertices < Vertex > markedVertices = new Vertices < Vertex > ( );
+		Queue < Vertex > queue = new LinkedList < Vertex > ( );
+		Vertex vertex = V.get ( 0 );
+		int index = 0;
+		
+		while ( markedVertices != V ) {
+			while ( markedVertices.contains ( vertex ) ) {
+				index += 1;
+				vertex = V.get ( index );
+			}
+			
+			markedVertices.add ( vertex );
+			queue.add ( vertex );
+			
+			Vertex start;
+			while ( ! queue.isEmpty ( ) ) {
+				start = queue.remove ( );
+				
+				Edge < Vertex > edge;
+				Vertex end;
+				for ( int i = 0; i < E.size ( ); i++ ) {
+					edge = E.get ( i );
+					
+					if ( edge.startsAt ( start ) ) {
+						end = edge.getEnd ( );
+						
+						if ( ! markedVertices.contains ( end ) ) {
+							markedVertices.add ( end );
+							queue.add ( end );
+						}
+					}
+				}
+			}
+		}
 		
 	}
-	
+	/**
 	public void printDFS ( ) {
 		
 	}

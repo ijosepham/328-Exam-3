@@ -66,6 +66,20 @@ public class Edge < Vertex > {
 		return false;
 	}
 	
+	public boolean startsAt ( Vertex start ) {
+		if ( this.start == start ) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean endsAt ( Vertex end ) {
+		if ( this.end == end ) {
+			return true;
+		}
+		return false;
+	}
+	
 	// compare to function that returns a negative number if in the right order
 	public int compareTo ( Edge < Vertex > edge ) {
 		int difference = 0;
