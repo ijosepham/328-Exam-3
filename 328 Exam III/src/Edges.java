@@ -14,8 +14,12 @@ public class Edges < Vertex > {
 		this.edges = edges;
 	}
 	
-	// adds the edge to the list
-	public int add ( Edge < Vertex > edge1 ) {
+	public void add ( Edge < Vertex > edge ) {
+		edges.add ( edge );
+	}
+	
+	// adds the edge to the list in order
+	public int addOrder ( Edge < Vertex > edge1 ) {
 		if ( edges.contains ( edge1 ) ) {
 			return -1;
 		} else {
@@ -94,5 +98,18 @@ public class Edges < Vertex > {
 		String str = edges.toString ( );
 		str = str.substring ( 1, str.length ( ) - 1 );
 		return str;
+	}
+	
+	public boolean equals ( Edges < Vertex > edges ) {
+		if ( size ( ) == edges.size ( ) ) {
+			for ( int i = 0; i < size ( ); i++ ) {
+				if ( this.edges.get ( i ) != edges.get ( i ) ) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

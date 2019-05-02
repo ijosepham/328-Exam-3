@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class Vertices < Vertex > extends ArrayList < Vertex > {
 	
-	public boolean add ( Vertex vertex1 ) {
+	public boolean addOrder ( Vertex vertex1 ) {
 		// add it to the list if its currently empty
 		if ( size ( ) == 0 ) {
-			super.add ( vertex1 );
+			add ( vertex1 );
 			return true;
 		} else {
 			Vertex vertex;
@@ -23,7 +23,7 @@ public class Vertices < Vertex > extends ArrayList < Vertex > {
 		}
 		// gets here if the given edge is greater than all existing edges
 		// add the edge at the end of the list
-		super.add ( vertex1 );
+		add ( vertex1 );
 		return true;
 	}
 	

@@ -1,11 +1,12 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
 public class Graph < Vertex > {
 	
-	protected Vertices < Vertex > V;
-	protected Edges < Vertex > E;
+	private Vertices < Vertex > V;
+	private Edges < Vertex > E;
 	
 	public Graph ( ) {
 		V = new Vertices < Vertex > ( );
@@ -20,136 +21,283 @@ public class Graph < Vertex > {
 	public void addVertex ( Vertex vertex ) {
 		// makes sure to check that vertex doesnt already exist
 		if ( ! V.contains ( vertex ) ) {
-			V.add ( vertex );
+			V.addOrder ( vertex );
 		}
 	}
 	
 	public void addEdge ( Edge < Vertex > edge ) {
-		// makes sure to check that edge doesnt already exist
-		if ( ! E.contains ( edge ) ) {
-			E.add ( edge );
+		Vertex start = edge.getStart ( );
+		Vertex end = edge.getEnd ( );
+		
+		// makes sure that the new edge doesnt have new vertices
+		if ( V.contains ( start ) && V.contains ( end ) ) {
+			// makes sure to check that edge doesnt already exist
+			if ( ! E.contains ( edge ) ) {
+				E.addOrder ( edge );
+			}
+		} else {
+			System.out.println ( "At least one of the vertices of the given edge do not exist." );
 		}
 	}
 	
 	public boolean isConnected ( ) {
-		// go through all the vertices
-		for ( int i = 0; i < V.size ( ); i++ ) {
-			// get vertex
-			Vertex vertex = V.get ( i );
-			
-			// if any vertex doesnt exist within E, 
-			// that means its not connected
-			if ( ! E.containsVertex ( vertex ) ) {
-				return false;
-			}
+		if ( DFS ( ).size ( ) == 1 ) {
+			return true;
 		}
-		// gets here if went through all vertexes and they all exist within E
-		return true;
+		return false;
 	}
 	
 	public int numConnComponents ( ) {
-		// counter
-		int counter = 0;
-		
-		// true unless already have a reverse/ is a loop
-		boolean isValid = true;
-		
-		// two edges to check
-		Edge < Vertex > edge1;
-		Edge < Vertex > edge2;
-		
-		// iterate through array
-		for ( int i = 0; i < E.size ( ); i++ ) {
-			// get first edge
-			edge1 = E.get ( i );
-			
-			// this for loop is to check previous nodes 
-			// if it was already cehcked
-			for ( int j = 0; j < i; j++ ) {
-				// get second edge
-				edge2 = E.get ( j );
-				
-				// if any edge was already checked
-				if ( edge2.isReverse ( edge1 ) ) {
-					// flip boolean
-					isValid = false;
-				}
-			}
-			// makes sure that its not a loop node
-			if ( edge1.isLoop ( ) ) {
-				isValid = false;
-			}
-			
-			// if the edge is new
-			if ( isValid ) {
-				// increment
-				counter++;
-			}
-			
-			// default true
-			isValid = true;
-		}
-		return counter;
+		return connectedComponents ( ).size ( );
 	}
 	
-	public Graph < Vertex > [ ] connectedComponents ( ) {
-		Graph < Vertex > [ ] graphs;
+	public List < Graph < Vertex > > connectedComponents ( ) {
+		// list to keep track of all graphs
+		List < Graph < Vertex > > graphs = new LinkedList < Graph < Vertex > > ( );
 		
+		// graph that represents a connected component
+		Graph < Vertex > graph = new Graph < Vertex > ( );
 		
+		Vertices < Vertex > markedVertices = new Vertices < Vertex > ( );
+		Queue < Vertex > queue = new LinkedList < Vertex > ( );
 		
+		// edge to use to see if 
+		Edge < Vertex > edge;
+		
+		// used to check in order which vertexes havent been checked
+		int index = 0;
+		Vertex markedVertex = V.get ( index );
+		
+		Vertex vertex;
+		
+		// while not all vertices are marked
+		while ( ! markedVertices.equals ( V ) ) {
+			// get the next unmarked vertex
+			while ( markedVertices.contains ( markedVertex ) ) {
+				index += 1;
+				markedVertex = V.get ( index );
+			}
+
+			// mark and queue it up to check
+			markedVertices.addOrder ( markedVertex );
+			queue.add ( markedVertex );
+			
+			graph = new Graph < Vertex > ( ) ;
+			graph.addVertex ( markedVertex );
+		
+			// while queue isnt empty
+			while ( ! queue.isEmpty ( ) ) {
+				// get the next vertex to check
+				markedVertex = queue.remove ( );
+				
+				// iterate through all edges
+				for ( int i = 0; i < E.size ( ); i++ ) {
+					// get next edge
+					edge = E.get ( i );
+					// if this edge has the vertex
+					if ( edge.contains ( markedVertex ) ) {
+						
+						// if the edge starts at the current vertex
+						// then that means the new vertex is the end
+						if ( edge.startsAt ( markedVertex ) ) {
+							vertex = edge.getEnd ( );
+						} else {
+							vertex = edge.getStart ( );
+						}
+						
+						// makes sure that a dupe isnt being added
+						if ( ! markedVertices.contains ( vertex ) ) {
+							// mark it, and add it to be checked next
+							markedVertices.addOrder ( vertex );
+							queue.add ( vertex );
+							graph.addVertex ( vertex );
+						}
+						graph.addEdge ( edge );
+					}
+				}
+			}
+			graphs.add ( graph );
+		}
 		return graphs;
 	}
 	
 	public void printBFS ( ) {
+		System.out.println ( "BFS: " + BFS ( ) );
+	}
+
+	public void printDFS ( ) {
+		System.out.println ( "DFS: " + DFS ( ) );
+	}
+	
+	public List < List < Vertex > > BFS ( ) {
+		List < List < Vertex > > bfs = new LinkedList < List < Vertex > > ( );
+		
+		List < Vertex > list;
+		
 		Vertices < Vertex > markedVertices = new Vertices < Vertex > ( );
 		Queue < Vertex > queue = new LinkedList < Vertex > ( );
-		Vertex vertex = V.get ( 0 );
-		int index = 0;
 		
-		while ( markedVertices != V ) {
-			while ( markedVertices.contains ( vertex ) ) {
+		// edge to use to see if 
+		Edge < Vertex > edge;
+		
+		// used to check in order which vertexes havent been checked
+		int index = 0;
+		Vertex markedVertex = V.get ( index );
+		
+		Vertex vertex;
+		
+		// while not all vertices are marked
+		while ( ! markedVertices.equals ( V ) ) {
+			// get the next unmarked vertex
+			while ( markedVertices.contains ( markedVertex ) ) {
 				index += 1;
-				vertex = V.get ( index );
+				markedVertex = V.get ( index );
 			}
+
+			// mark and queue it up to check
+			markedVertices.addOrder ( markedVertex );
+			queue.add ( markedVertex );
 			
-			markedVertices.add ( vertex );
-			queue.add ( vertex );
-			
-			Vertex start;
+			list = new LinkedList < Vertex > ( );
+			list.add ( markedVertex );
+		
+			// while queue isnt empty
 			while ( ! queue.isEmpty ( ) ) {
-				start = queue.remove ( );
+				// get the next vertex to check
+				markedVertex = queue.remove ( );
 				
-				Edge < Vertex > edge;
-				Vertex end;
+				// iterate through all edges
 				for ( int i = 0; i < E.size ( ); i++ ) {
+					// get next edge
 					edge = E.get ( i );
-					
-					if ( edge.startsAt ( start ) ) {
-						end = edge.getEnd ( );
+					// if this edge has the vertex
+					if ( edge.contains ( markedVertex ) ) {
 						
-						if ( ! markedVertices.contains ( end ) ) {
-							markedVertices.add ( end );
-							queue.add ( end );
+						// if the edge starts at the current vertex
+						// then that means the new vertex is the end
+						if ( edge.startsAt ( markedVertex ) ) {
+							vertex = edge.getEnd ( );
+						} else {
+							vertex = edge.getStart ( );
+						}
+						
+						// makes sure that a dupe isnt being added
+						if ( ! markedVertices.contains ( vertex ) ) {
+							// mark it, and add it to be checked next
+							markedVertices.addOrder ( vertex );
+							queue.add ( vertex );
+							list.add ( vertex );
 						}
 					}
 				}
 			}
+			bfs.add ( list );
 		}
-		
+		return bfs;
 	}
-	/**
-	public void printDFS ( ) {
+	
+	public List < List < Vertex > > DFS ( ) {
+		List < List < Vertex > > dfs = new LinkedList < List < Vertex > > ( );
 		
+		List < Vertex > list;
+		
+		Vertices < Vertex > markedVertices = new Vertices < Vertex > ( );
+		Stack < Vertex > stack = new Stack < Vertex > ( );
+		
+		// used to check if markedvertex has a neighbor
+		boolean added = false;
+		
+		// edge to use to see if 
+		Edge < Vertex > edge;
+		
+		// used to check in order which vertexes havent been checked
+		int index = 0;
+		Vertex markedVertex = V.get ( index );
+		
+		Vertex vertex;
+		
+		Vertex front;
+		
+		// while not all vertices are marked
+		while ( ! markedVertices.equals ( V ) ) {
+			// get the next unmarked vertex
+			while ( markedVertices.contains ( markedVertex ) ) {
+				index += 1;
+				markedVertex = V.get ( index );
+			}
+	
+			// mark and queue it up to check
+			markedVertices.addOrder ( markedVertex );
+			stack.push ( markedVertex );
+			
+			list = new LinkedList < Vertex > ( );
+			list.add ( markedVertex );
+			
+			while ( ! stack.isEmpty ( ) ) {
+				front = stack.peek ( );
+				// iterate through list to look for next vertex to cross
+				for ( int i = 0; i < E.size ( ); i++ ) {
+					// get next edge
+					edge = E.get ( i );
+					
+					// if a vertex hasnt been added yet, look for one
+					if ( ! added ) {
+						// if this edge has the vertex
+						if ( edge.contains ( front ) ) {
+							
+							// if the edge starts at the current vertex
+							// then that means the new vertex is the end
+							if ( edge.startsAt ( front ) ) {
+								vertex = edge.getEnd ( );
+							} else {
+								vertex = edge.getStart ( );
+							}
+							
+							// makes sure that a dupe isnt being added
+							if ( ! markedVertices.contains ( vertex ) ) {
+								// mark it, and add it to be checked next
+								markedVertices.addOrder ( vertex );
+								stack.push ( vertex );
+								
+								// flip 
+								added = true;
+								
+								list.add ( vertex );
+							}
+						}
+					}
+				}
+				
+				// if a neighbor was never found, go to next in line
+				if ( ! added ) {
+					stack.pop ( );
+				} else { 
+					front = stack.peek ( );
+				}
+				added = false;
+				// flip to default
+			}
+			dfs.add ( list );
+		}
+		return dfs;
 	}
-	*/
+	
 	public String toString ( ) {
 		String str = "Nodes: " + V.toString ( ) + "\n";
-		str += "Edges: " + E.toString ( );
+		str += "Edges: " + E.toString ( ) + "\n";
 		return str;
 	}
 	
-	
 	public void display ( ) {
 		System.out.println ( toString ( ) );
+	}
+
+	public boolean equals ( Graph < Vertex > graph ) {
+		if ( this.V.equals ( graph.V ) ) {
+			if ( this.E.equals ( graph.E ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
