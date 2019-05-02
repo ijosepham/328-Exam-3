@@ -36,7 +36,7 @@ public class DirectedGraph < Vertex > {
 				E.addOrder ( edge );
 			}
 		} else {
-			System.out.println ( "At least one of the vertices of the given edge do not exist." );
+			//System.out.println ( "At least one of the vertices of the given edge do not exist." );
 		}
 	}
 	
@@ -47,8 +47,11 @@ public class DirectedGraph < Vertex > {
 	}
 
 	public boolean isStronglyConnected ( ) {
-		for ( int i = 0; i < V.size ( ); i++ ) {
-			if ( DFS ( i ).size ( ) > 1 ) {
+		if ( this.V.size ( ) == 1 ) {
+			return false; 
+		}
+		for ( int i = 0; i < this.V.size ( ); i++ ) {
+			if ( this.DFS ( i ).size ( ) > 1 ) {
 				return false;
 			}
 		}
@@ -64,7 +67,7 @@ public class DirectedGraph < Vertex > {
 		List < DirectedGraph < Vertex > > graphs = new LinkedList < DirectedGraph < Vertex > > ( );
 		
 		// graph that represents a connected component
-		DirectedGraph < Vertex > graph = new DirectedGraph < Vertex > ( );
+		DirectedGraph < Vertex > graph;
 		
 		Vertices < Vertex > markedVertices = new Vertices < Vertex > ( );
 		Queue < Vertex > queue = new LinkedList < Vertex > ( );
@@ -118,7 +121,9 @@ public class DirectedGraph < Vertex > {
 					}
 				}
 			}
-			graphs.add ( graph );
+			if ( graph.isStronglyConnected ( ) ) {
+				graphs.add ( graph );
+			}
 		}
 		return graphs;
 	}
@@ -208,7 +213,7 @@ public class DirectedGraph < Vertex > {
 		
 		// used to check in order which vertexes havent been checked
 		Vertex markedVertex = V.get ( index );
-		index = 0;
+		index = -1;
 
 		Vertex start;
 		Vertex end;
@@ -254,10 +259,10 @@ public class DirectedGraph < Vertex > {
 						}
 					}
 				}
-				
 				// if a neighbor was never found, go to next in line
 				if ( ! added ) {
 					stack.pop ( );
+					
 				} else { 
 					start = stack.peek ( );
 				}
@@ -270,8 +275,8 @@ public class DirectedGraph < Vertex > {
 	}
 	
 	public String toString ( ) {
-		String str = "Nodes: " + V.toString ( ) + "\n";
-		str += "Edges: " + E.toString ( ) + "\n";
+		String str = "\nNodes: " + V.toString ( ) + "\n";
+		str += "Edges: " + E.toString ( );
 		return str;
 	}
 	

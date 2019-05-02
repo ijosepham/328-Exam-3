@@ -36,11 +36,14 @@ public class Graph < Vertex > {
 				E.addOrder ( edge );
 			}
 		} else {
-			System.out.println ( "At least one of the vertices of the given edge do not exist." );
+			//System.out.println ( "At least one of the vertices of the given edge do not exist." );
 		}
 	}
 	
 	public boolean isConnected ( ) {
+		if ( this.V.size ( ) == 1 ) {
+			return false;
+		}
 		if ( DFS ( ).size ( ) == 1 ) {
 			return true;
 		}
@@ -284,7 +287,7 @@ public class Graph < Vertex > {
 	
 	public String toString ( ) {
 		String str = "Nodes: " + V.toString ( ) + "\n";
-		str += "Edges: " + E.toString ( ) + "\n";
+		str += "Edges: " + E.toString ( );
 		return str;
 	}
 	
