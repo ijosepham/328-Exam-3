@@ -1,14 +1,133 @@
+import java.util.List;
 
 public class Main {
 	public static void main ( String [ ] args ) {
+		tester ( );
+	}
+	
+	public static void tester ( ) {
 		tester1 ( );
 		tester2 ( );
-		
-		ex3u ( );
-		ex3d ( );
+		tester3a ( );
+		tester3b ( );
 	}
 	
 	public static void tester1 ( ) {
+		System.out.println ( "Tester 1: " );
+		Graph < String > graph = new Graph < String > ( );
+		graph.addVertex ( "a" );
+		graph.addVertex ( "b" );
+		graph.addVertex ( "c" );
+		graph.addVertex ( "d" );
+		graph.addVertex ( "e" );
+		graph.addVertex ( "f" );
+		graph.addVertex ( "g" );
+		graph.addVertex ( "h" );
+		
+		graph.addEdge ( new Edge < String > ( "a", "b" ) );
+		graph.addEdge ( new Edge < String > ( "a", "c" ) );
+		graph.addEdge ( new Edge < String > ( "b", "c" ) );
+		graph.addEdge ( new Edge < String > ( "d", "e" ) );
+		graph.addEdge ( new Edge < String > ( "f", "g" ) );
+		graph.addEdge ( new Edge < String > ( "g", "h" ) );
+		
+		graph.printDFS ( );
+		
+		System.out.println ( "isConnected: " + graph.isConnected ( ) );
+		System.out.println ( "numComp: " + graph.numConnComponents ( ) );
+	}
+	
+	public static void tester2 ( ) {
+		System.out.println ( "\nTester 2: " );
+		Vertices < String > vertices = new Vertices < String > ( );
+		vertices.addOrder ( "a" );
+		vertices.addOrder ( "b" );
+		vertices.addOrder ( "c" );
+		vertices.addOrder ( "d" );
+		vertices.addOrder ( "e" );
+		vertices.addOrder ( "f" );
+		vertices.addOrder ( "g" );
+		vertices.addOrder ( "h" );
+		
+		Edges < String > edges = new Edges < String > ( );
+		edges.addOrder ( new Edge < String > ( "a", "b" ) );
+		edges.addOrder ( new Edge < String > ( "a", "c" ) );
+		edges.addOrder ( new Edge < String > ( "b", "c" ) );
+		edges.addOrder ( new Edge < String > ( "d", "e" ) );
+		edges.addOrder ( new Edge < String > ( "f", "g" ) );
+		edges.addOrder ( new Edge < String > ( "g", "h" ) );
+		
+		Graph < String > graph = new Graph < String > ( vertices, edges );
+		
+		graph.printDFS ( );
+		
+		System.out.println ( "isConnected: " + graph.isConnected ( ) );
+		System.out.println ( "numComp: " + graph.numConnComponents ( ) );
+		System.out.println ( "\nConnComps: " );
+		List < Graph < String > > list = graph.connectedComponents ( );
+		for ( int i = 0; i < list.size ( ); i++ ) {
+			System.out.println ( "Connected Component #" + ( i + 1 ) );
+			System.out.println ( list.get ( i ) );
+			System.out.println ( "" );
+		}
+	}
+	
+	public static void tester3a ( ) {
+		System.out.println ( "\nDirected Graph G Tester: " );
+		Vertices < String > vertices = new Vertices < String > ( );
+		vertices.addOrder ( "a" );
+		vertices.addOrder ( "b" );
+		vertices.addOrder ( "c" );
+		vertices.addOrder ( "d" );
+		vertices.addOrder ( "e" );
+		
+		Edges < String > edges = new Edges < String > ( );
+		edges.addOrder ( new Edge < String > ( "a", "b" ) );
+		edges.addOrder ( new Edge < String > ( "b", "c" ) );
+		edges.addOrder ( new Edge < String > ( "b", "d" ) );
+		edges.addOrder ( new Edge < String > ( "c", "d" ) );
+		edges.addOrder ( new Edge < String > ( "d", "e" ) );
+		edges.addOrder ( new Edge < String > ( "e", "a" ) );
+		
+		DirectedGraph < String > G = new DirectedGraph < String > ( vertices, edges );
+		
+		System.out.println ( "isConnected: " + G.isConnected ( ) );
+		System.out.println ( "isStronglyConnected: " + G.isStronglyConnected ( ) );
+		System.out.println ( "BFS: " + G.BFS ( ) );
+	}
+	
+	public static void tester3b ( ) {
+		System.out.println ( "\nDirected Graph H Tester: " );
+		Vertices < String > vertices = new Vertices < String > ( );
+		vertices.addOrder ( "a" );
+		vertices.addOrder ( "b" );
+		vertices.addOrder ( "c" );
+		vertices.addOrder ( "d" );
+		vertices.addOrder ( "e" );
+		
+		Edges < String > edges = new Edges < String > ( );
+		edges.addOrder ( new Edge < String > ( "b", "a" ) );
+		edges.addOrder ( new Edge < String > ( "b", "c" ) );
+		edges.addOrder ( new Edge < String > ( "c", "d" ) );
+		edges.addOrder ( new Edge < String > ( "d", "b" ) );
+		edges.addOrder ( new Edge < String > ( "d", "e" ) );
+		edges.addOrder ( new Edge < String > ( "e", "a" ) );
+		
+		DirectedGraph < String > H = new DirectedGraph < String > ( vertices, edges );
+		
+		System.out.println ( "isConnected: " + H.isConnected ( ) );
+		System.out.println ( "isStronglyConnected: " + H.isStronglyConnected ( ) );
+		System.out.println ( "BFS: " + H.BFS ( ) );
+		System.out.println ( "stronglyConnComps: " );
+		List < DirectedGraph < String > > list = H.connectedComponents ( );
+		for ( int i = 0; i < list.size ( ); i++ ) {
+			System.out.println ( "Strongly Connected Component #" + ( i + 1 ) );
+			System.out.println ( list.get ( i ) );
+			System.out.println ( "" );
+		}
+	}
+	
+	public static void testera ( ) {
 		System.out.println ( "Tester 1: " );
 		DirectedGraph < String > graph = new DirectedGraph < String > ( );
 		graph.addVertex ( "F" );
@@ -47,7 +166,7 @@ public class Main {
 		System.out.print ( "isConnected: " + graph.isConnected ( ) );
 	}
 	
-	public static void tester2 ( ) {
+	public static void testerb ( ) {
 		System.out.println ( "\n\nTester 2: " );
 		DirectedGraph < String > graph = new DirectedGraph < String > ( );
 		graph.addVertex ( "F" );

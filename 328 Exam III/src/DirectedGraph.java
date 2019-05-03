@@ -50,6 +50,7 @@ public class DirectedGraph < Vertex > {
 		if ( this.V.size ( ) == 1 ) {
 			return false; 
 		}
+		
 		for ( int i = 0; i < this.V.size ( ); i++ ) {
 			if ( this.DFS ( i ).size ( ) > 1 ) {
 				return false;
